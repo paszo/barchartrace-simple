@@ -297,7 +297,39 @@ d3.csv(url, d3.autoType).then(data => {
             .attr('y', y(top_n) + (y(1) - y(0) - barPadding)/2)
             .remove()
 
+        // UPDATE THE VALUE LABELS
 
+        let valueLabels = svg.selectAll('.valueLabel')
+            .data(yearSlice, d => d.name)
+
+        valueLabels
+            .enter()
+            .append('text')
+            .attr('class', 'valueLabel')
+            .attr('x', d => x(d.value) + 5)
+            .attr('y', y(top_n) + (y(1) - y(0) - barPadding)/2)
+            .attr('alignment-baseline', 'hanging')
+            .text(d => d3.format(',.0f')(d.lastValue))
+            .transition()
+            .duration(tickDuration)
+            .ease(d3.easeLinear)
+            .attr('y', d => y(d.rank) + (y(1) - y(0) - barPadding)/2)
+
+        valueLabels
+            .transition()
+            .duration(tickDuration)
+            .ease(d3.easeLinear)
+            .attr('x', d => x(d.value) + 5)
+            .attr('y', d => y(d.rank) + (y(1) - y(0) - barPadding)/2)
+
+        valueLabels
+            .exit()
+            .transition()
+            .duration(tickDuration)
+            .ease(d3.easeLinear)
+            .attr('x', d => x(d.value) + 5)
+            .attr('y', y(top_n)+(y(1) - y(0) - barPadding)/2)
+            .remove();
 
 
 
