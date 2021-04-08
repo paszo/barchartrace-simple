@@ -189,6 +189,17 @@ d3.csv(url, d3.autoType).then(data => {
         .style('text-anchor', 'end')
         .text(d => d.name)
 
+    svg.selectAll('text.valueLabel')
+        .data(yearSlice, d => d.name)
+        .enter()
+        .append('text')
+        .attr('class', 'valueLabel')
+        .attr('x', d => x(d.value)+5)
+        .attr('y', d => y(d.rank) + (y(1) - y(0) - barPadding)/2)
+        .attr('alignment-baseline', 'hanging')
+        .text(d => d3.format(',.0f')(d.lastValue));
+
+
 
 
 
