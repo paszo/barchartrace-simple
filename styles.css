@@ -18,3 +18,9 @@ text{
 path.domain{
     display: none;
 }
+
+text.yearText{
+    font-size: 64px;
+    font-weight: 700;
+    opacity: 0.25;
+}

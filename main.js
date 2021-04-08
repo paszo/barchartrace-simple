@@ -199,6 +199,14 @@ d3.csv(url, d3.autoType).then(data => {
         .attr('alignment-baseline', 'hanging')
         .text(d => d3.format(',.0f')(d.lastValue));
 
+  let yearText = svg.append('text')
+      .attr('class', 'yearText')
+      .attr('x', width - margin.right)
+      .attr('y', height - 25)
+      .style('text-anchor', 'end')
+      .html(Math.floor(year))
+
+
 
 
 
