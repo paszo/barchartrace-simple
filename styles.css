@@ -1,0 +1,20 @@
+text{
+    font-size: 16px;
+    font-family: Open Sans, sans-serif;
+}
+
+.tick text {
+    fill: #777777;
+}
+
+.tick line {
+    stroke: #dddddd;
+}
+
+.tick line.origin{
+    stroke: #aaaaaa;
+}
+
+path.domain{
+    display: none;
+}
