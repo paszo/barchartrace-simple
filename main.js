@@ -166,17 +166,17 @@ d3.csv(url, d3.autoType).then(data => {
       .selectAll('.tick line')
       .classed('origin', d => d === 0);
 
-  svg.selectAll('rect.bar')
-      .data(yearSlice, d => d.name)
-      .enter()
-      .append('rect')
-      .attr('class', 'bar')
-      .attr('x', x(0)+1)
-      .attr('width', d => x(d.value)-x(0)-1)
-      .attr('y', d => y(d.rank)+5)
-      .attr('height', y(1)-y(0)-barPadding)
-      // .attr('height', y.)
-      .style('fill', d => d.colour)
+        svg.selectAll('rect.bar')
+            .data(yearSlice, d => d.name)
+            .enter()
+            .append('rect')
+            .attr('class', 'bar')
+            .attr('x', x(0) + 1)
+            .attr('width', d => x(d.value)-x(0)-1)
+            .attr('y', d => y(d.rank)+5)
+            .attr('height', y(1)-y(0)-barPadding)
+            .style('fill', d => d.colour)
+
 
     svg.selectAll('text.label')
         .data(yearSlice, d => d.name)
@@ -214,7 +214,11 @@ d3.csv(url, d3.autoType).then(data => {
 
         yearSlice.forEach((d,i) => d.rank = i);
 
+        // X SCALE UPDATE
+
         x.domain([0, d3.max(yearSlice, d => d.value)]);
+
+        // X AXIS UPDATE
 
         svg.select('.xAxis')
             .transition()
@@ -222,16 +226,52 @@ d3.csv(url, d3.autoType).then(data => {
             .ease(d3.easeLinear)
             .call(xAxis)
 
+        // BARS UPDATE
+
+        let bars = svg.selectAll('.bar')
+            .data(yearSlice, d => d.name);
 
 
 
 
 
-        console.log('tick');
+        bars
+            .enter()
+            .append('rect')
+            .attr('class','bar')
+            .attr('x', x(0) + 1)
+            .attr('width', d => x(d.value)-x(0)-1)
+            .attr('y', y(top_n+1)+5)
+            .attr('height', y(1)-y(0)-barPadding)
+            .style('fill', d => d.colour)
+            .transition()
+            .duration(tickDuration)
+            .ease(d3.easeLinear)
+            .attr('y', d => y(d.rank)+5);
+
+        bars
+            .transition()
+            .duration(tickDuration)
+            .ease(d3.easeLinear)
+            .attr('width', d => x(d.value)-x(0)-1)
+            .attr('y', d => y(d.rank)+5)
+
+        bars
+            .exit()
+            .transition()
+            .duration(tickDuration)
+            .ease(d3.easeLinear)
+            .attr('width', d => x(d.value)-x(0)-1)
+            .attr('y', d => y(top_n+1)+5)
+            .remove();
+
+
+
+
+
 
         if(year === lastYear) ticker.stop();
         year = +d3.format('.1f')(+year + 0.1);
-        console.log(year);
 
 
     }, tickDuration)
