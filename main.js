@@ -231,17 +231,13 @@ d3.csv(url, d3.autoType).then(data => {
         let bars = svg.selectAll('.bar')
             .data(yearSlice, d => d.name);
 
-
-
-
-
         bars
             .enter()
             .append('rect')
             .attr('class','bar')
             .attr('x', x(0) + 1)
             .attr('width', d => x(d.value)-x(0)-1)
-            .attr('y', y(top_n+1)+5)
+            .attr('y', y(top_n)+5)
             .attr('height', y(1)-y(0)-barPadding)
             .style('fill', d => d.colour)
             .transition()
@@ -262,9 +258,44 @@ d3.csv(url, d3.autoType).then(data => {
             .duration(tickDuration)
             .ease(d3.easeLinear)
             .attr('width', d => x(d.value)-x(0)-1)
-            .attr('y', d => y(top_n+1)+5)
+            .attr('y', y(top_n)+5)
             .remove();
 
+        // LABELS UPDATE
+
+        let labels = svg.selectAll('.label')
+            .data(yearSlice, d => d.name)
+
+        labels
+            .enter()
+            .append('text')
+            .attr('class', 'label')
+            .attr('x', d => x(d.value)-8)
+            .attr('y', y(top_n) + (y(1) - y(0) - barPadding)/2)
+            .attr('alignment-baseline', 'hanging')
+            .style('text-anchor', 'end')
+            .html(d => d.name)
+            .transition()
+            .duration(tickDuration)
+            .ease(d3.easeLinear)
+            .attr('y', d => y(d.rank) + (y(1) - y(0) - barPadding)/2)
+
+        labels
+            .transition()
+            .duration(tickDuration)
+            .ease(d3.easeLinear)
+            .attr('x', d => x(d.value)-8)
+            .attr('y', d => y(d.rank) + (y(1) - y(0) - barPadding)/2)
+
+
+        labels
+            .exit()
+            .transition()
+            .duration(tickDuration)
+            .ease(d3.easeLinear)
+            .attr('x', d => x(d.value)-8)
+            .attr('y', y(top_n) + (y(1) - y(0) - barPadding)/2)
+            .remove()
 
 
 
