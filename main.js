@@ -206,15 +206,34 @@ d3.csv(url, d3.autoType).then(data => {
       .style('text-anchor', 'end')
       .html(Math.floor(year))
 
+    let ticker = d3.interval((e) => {
+
+        yearSlice = data.filter(d => d.year === year)
+            .sort((a,b) => b.value - a.value)
+            .slice(0, top_n);
+
+        yearSlice.forEach((d,i) => d.rank = i);
+
+        x.domain([0, d3.max(yearSlice, d => d.value)]);
+
+        svg.select('.xAxis')
+            .transition()
+            .duration(tickDuration)
+            .ease(d3.easeLinear)
+            .call(xAxis)
 
 
 
 
 
 
+        console.log('tick');
+
+        if(year === lastYear) ticker.stop();
+        year = +d3.format('.1f')(+year + 0.1);
+        console.log(year);
 
 
-
-
+    }, tickDuration)
 
 })
