@@ -5,7 +5,7 @@ const width = 960;
 const height = 600;
 
 const tickDuration = 250;
-const top_n = 5;
+const top_n = 12;
 const margin = {
   top: 80,
   right: 0,
@@ -177,6 +177,17 @@ d3.csv(url, d3.autoType).then(data => {
       .attr('height', y(1)-y(0)-barPadding)
       // .attr('height', y.)
       .style('fill', d => d.colour)
+
+    svg.selectAll('text.label')
+        .data(yearSlice, d => d.name)
+        .enter()
+        .append('text')
+        .attr('class', 'label')
+        .attr('x', d => x(d.value)-8)
+        .attr('y', d => y(d.rank) + (y(1) - y(0) - barPadding)/2)
+        .attr('alignment-baseline', 'hanging')
+        .style('text-anchor', 'end')
+        .text(d => d.name)
 
 
 
