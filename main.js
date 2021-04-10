@@ -321,6 +321,12 @@ d3.csv(url, d3.autoType).then(data => {
             .ease(d3.easeLinear)
             .attr('x', d => x(d.value) + 5)
             .attr('y', d => y(d.rank) + (y(1) - y(0) - barPadding)/2)
+            .tween("text", function(d){
+                let i = d3.interpolateRound(d.lastValue, d.value);
+                return function(t) {
+                    this.textContent = d3.format(',')(i(t));
+                };
+            });
 
         valueLabels
             .exit()
